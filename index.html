@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="theme-color" content="#ffffff">
+<title>TaskFlow — Minimal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+
+:root{
+–bg:#ffffff;
+–fg:#000000;
+–gray1:#f5f5f5;
+–gray2:#e5e5e5;
+–gray3:#d4d4d4;
+–gray4:#737373;
+–gray5:#404040;
+–sb:env(safe-area-inset-bottom,0px);
+–st:env(safe-area-inset-top,0px);
+}
+
+html,body{
+height:100%;
+overflow:hidden;
+background:var(–bg);
+color:var(–fg);
+font-family:‘Inter’,-apple-system,sans-serif;
+font-size:15px;
+-webkit-font-smoothing:antialiased;
+font-weight:400;
+}
+
+/* ── APP SHELL ── */
+.app{
+display:flex;
+flex-direction:column;
+height:100%;
+max-width:480px;
+margin:0 auto;
+}
+
+/* ── TOP BAR ── */
+.top{
+flex-shrink:0;
+padding:calc(var(–st) + 20px) 24px 16px;
+border-bottom:1px solid var(–gray2);
+background:var(–bg);
+display:flex;
+align-items:center;
+justify-content:space-between;
+}
+
+.logo{
+font-size:18px;
+font-weight:700;
+letter-spacing:-0.5px;
+}
+
+.sync{
+padding:6px 14px;
+border:1px solid var(–gray3);
+border-radius:20px;
+background:var(–bg);
+font-size:13px;
+font-weight:500;
+cursor:pointer;
+display:flex;
+align-items:center;
+gap:6px;
+transition:all .2s;
+}
+.sync:active{background:var(–gray1)}
+
+.dot{
+width:6px;
+height:6px;
+border-radius:50%;
+background:var(–fg);
+}
+.dot.busy{animation:pulse .8s infinite}
+@keyframes pulse{0%,100%{opacity:1} 50%{opacity:.3}}
+
+/* ── CONTENT ── */
+.content{
+flex:1;
+overflow-y:auto;
+-webkit-overflow-scrolling:touch;
+padding-bottom:calc(60px + var(–sb));
+}
+
+/* ── BOTTOM NAV ── */
+.bnav{
+position:fixed;
+bottom:0;
+left:50%;
+transform:translateX(-50%);
+width:100%;
+max-width:480px;
+padding:0 24px calc(var(–sb) + 12px);
+background:var(–bg);
+border-top:1px solid var(–gray2);
+display:flex;
+gap:8px;
+}
+
+.ni{
+flex:1;
+padding:10px 8px;
+text-align:center;
+cursor:pointer;
+font-size:12px;
+font-weight:500;
+color:var(–gray4);
+border-radius:8px;
+transition:all .2s;
+position:relative;
+}
+.ni.on{background:var(–fg);color:var(–bg)}
+.ni:active{transform:scale(.95)}
+
+.badge{
+position:absolute;
+top:6px;
+right:8px;
+background:var(–fg);
+color:var(–bg);
+font-size:9px;
+font-weight:700;
+padding:2px 5px;
+border-radius:10px;
+min-width:16px;
+display:none;
+}
+.ni.on .badge{background:var(–bg);color:var(–fg)}
+.badge.show{display:block}
+
+/* ── PAGES ── */
+.pg{display:none;padding:24px}
+.pg.on{display:block;animation:fade .3s}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+
+/* ── SECTION ── */
+.sec{margin-bottom:32px}
+.sh{
+display:flex;
+align-items:center;
+justify-content:space-between;
+margin-bottom:16px;
+}
+.sh h2{font-size:20px;font-weight:700;letter-spacing:-0.5px}
+.sh .add{
+padding:6px 16px;
+background:var(–fg);
+color:var(–bg);
+border:none;
+border-radius:20px;
+font-size:13px;
+font-weight:600;
+cursor:pointer;
+font-family:‘Inter’,sans-serif;
+}
+.sh .add:active{opacity:.8}
+
+/* ── STATS ── */
+.stats{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
+margin-bottom:24px;
+}
+.stat{
+background:var(–gray1);
+border:1px solid var(–gray2);
+border-radius:12px;
+padding:20px 16px;
+}
+.stat-val{
+font-size:32px;
+font-weight:700;
+line-height:1;
+margin-bottom:4px;
+}
+.stat-lbl{
+font-size:12px;
+font-weight:500;
+color:var(–gray4);
+text-transform:uppercase;
+letter-spacing:0.5px;
+}
+
+/* ── TASK CARD ── */
+.task{
+background:var(–bg);
+border:1px solid var(–gray2);
+border-radius:12px;
+padding:16px;
+margin-bottom:8px;
+display:flex;
+align-items:flex-start;
+gap:12px;
+cursor:pointer;
+transition:all .2s;
+}
+.task:active{background:var(–gray1)}
+.task.done{opacity:.4}
+
+.ck{
+width:20px;
+height:20px;
+border:2px solid var(–gray3);
+border-radius:50%;
+flex-shrink:0;
+margin-top:2px;
+cursor:pointer;
+display:flex;
+align-items:center;
+justify-content:center;
+transition:all .2s;
+}
+.ck.on{
+background:var(–fg);
+border-color:var(–fg);
+}
+.ck.on::after{
+content:‘✓’;
+color:var(–bg);
+font-size:12px;
+font-weight:700;
+}
+
+.tbody{flex:1;min-width:0}
+.ttitle{
+font-size:15px;
+font-weight:500;
+line-height:1.4;
+margin-bottom:6px;
+overflow:hidden;
+text-overflow:ellipsis;
+display:-webkit-box;
+-webkit-line-clamp:2;
+-webkit-box-orient:vertical;
+}
+.ttitle.s{
+text-decoration:line-through;
+color:var(–gray4);
+}
+
+.tmeta{
+display:flex;
+flex-wrap:wrap;
+gap:6px;
+font-size:12px;
+color:var(–gray4);
+}
+
+.tag{
+padding:2px 8px;
+background:var(–gray1);
+border:1px solid var(–gray2);
+border-radius:12px;
+font-weight:500;
+}
+.tag.due{border-color:var(–fg);color:var(–fg)}
+
+/* ── PROJECT CARD ── */
+.proj{
+background:var(–gray1);
+border:1px solid var(–gray2);
+border-radius:12px;
+padding:20px;
+margin-bottom:12px;
+cursor:pointer;
+transition:all .2s;
+}
+.proj:active{background:var(–gray2)}
+
+.pname{
+font-size:16px;
+font-weight:600;
+margin-bottom:6px;
+letter-spacing:-0.3px;
+}
+.pdesc{
+font-size:13px;
+color:var(–gray4);
+margin-bottom:16px;
+line-height:1.5;
+}
+
+.prog{
+height:4px;
+background:var(–gray2);
+border-radius:2px;
+overflow:hidden;
+margin-bottom:12px;
+}
+.progf{
+height:100%;
+background:var(–fg);
+width:0;
+transition:width 1s cubic-bezier(.2,1,.3,1);
+}
+
+.pmeta{
+display:flex;
+gap:16px;
+font-size:12px;
+color:var(–gray4);
+}
+
+/* ── EMPTY ── */
+.empty{
+text-align:center;
+padding:60px 20px;
+color:var(–gray4);
+}
+.empty-ic{
+font-size:48px;
+margin-bottom:12px;
+opacity:.3;
+}
+.empty-txt{
+font-size:14px;
+}
+
+/* ── CHIPS ── */
+.chips{
+display:flex;
+gap:8px;
+overflow-x:auto;
+padding-bottom:4px;
+margin-bottom:16px;
+scrollbar-width:none;
+}
+.chips::-webkit-scrollbar{display:none}
+.chip{
+flex-shrink:0;
+padding:6px 16px;
+border:1px solid var(–gray2);
+border-radius:20px;
+font-size:13px;
+font-weight:500;
+background:var(–bg);
+color:var(–gray4);
+cursor:pointer;
+font-family:‘Inter’,sans-serif;
+}
+.chip.on{
+background:var(–fg);
+border-color:var(–fg);
+color:var(–bg);
+}
+
+/* ── SEARCH ── */
+.srch{
+display:flex;
+align-items:center;
+gap:10px;
+padding:12px 16px;
+border:1px solid var(–gray2);
+border-radius:12px;
+margin-bottom:16px;
+background:var(–bg);
+}
+.srch input{
+flex:1;
+border:none;
+outline:none;
+background:none;
+font-family:‘Inter’,sans-serif;
+font-size:14px;
+color:var(–fg);
+}
+.srch input::placeholder{color:var(–gray4)}
+
+/* ── FORM ── */
+.fi{margin-bottom:16px}
+.fl{
+display:block;
+font-size:11px;
+font-weight:600;
+text-transform:uppercase;
+letter-spacing:0.5px;
+color:var(–gray4);
+margin-bottom:8px;
+}
+.fin{
+width:100%;
+padding:12px 16px;
+border:1px solid var(–gray2);
+border-radius:12px;
+font-family:‘Inter’,sans-serif;
+font-size:14px;
+background:var(–bg);
+outline:none;
+}
+.fin:focus{border-color:var(–fg)}
+textarea.fin{resize:none;min-height:80px}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+/* ── BUTTONS ── */
+.bp{
+width:100%;
+padding:14px;
+background:var(–fg);
+color:var(–bg);
+border:none;
+border-radius:12px;
+font-size:15px;
+font-weight:600;
+cursor:pointer;
+font-family:‘Inter’,sans-serif;
+margin-top:8px;
+}
+.bp:active{opacity:.8}
+
+.bo{
+width:100%;
+padding:14px;
+background:var(–bg);
+border:1px solid var(–gray3);
+border-radius:12px;
+color:var(–fg);
+font-size:15px;
+font-weight:600;
+cursor:pointer;
+font-family:‘Inter’,sans-serif;
+margin-top:12px;
+}
+.bo:active{background:var(–gray1)}
+
+/* ── MODAL ── */
+.ov{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.4);
+z-index:200;
+opacity:0;
+pointer-events:none;
+transition:opacity .3s;
+}
+.ov.on{opacity:1;pointer-events:all}
+
+.modal{
+position:fixed;
+bottom:0;
+left:50%;
+transform:translateX(-50%) translateY(100%);
+width:100%;
+max-width:480px;
+background:var(–bg);
+border-radius:20px 20px 0 0;
+z-index:201;
+padding-bottom:calc(var(–sb) + 16px);
+transition:transform .35s cubic-bezier(.2,1,.2,1);
+max-height:90vh;
+display:flex;
+flex-direction:column;
+}
+.modal.on{transform:translateX(-50%) translateY(0)}
+
+.mhandle{
+width:36px;
+height:4px;
+background:var(–gray3);
+border-radius:2px;
+margin:12px auto 8px;
+}
+
+.mhead{
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:8px 24px 16px;
+border-bottom:1px solid var(–gray2);
+}
+.mhead h3{font-size:16px;font-weight:600}
+.mclose{
+width:32px;
+height:32px;
+border-radius:50%;
+border:1px solid var(–gray2);
+background:var(–bg);
+color:var(–gray4);
+font-size:18px;
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+}
+
+.mbody{
+padding:24px;
+overflow-y:auto;
+flex:1;
+}
+
+/* ── TOAST ── */
+.toasts{
+position:fixed;
+top:calc(var(–st) + 80px);
+left:50%;
+transform:translateX(-50%);
+width:calc(100% - 48px);
+max-width:400px;
+z-index:999;
+pointer-events:none;
+display:flex;
+flex-direction:column;
+gap:8px;
+}
+
+.toast{
+background:var(–fg);
+color:var(–bg);
+padding:12px 16px;
+border-radius:12px;
+font-size:14px;
+font-weight:500;
+animation:slidedown .3s;
+box-shadow:0 4px 16px rgba(0,0,0,.2);
+}
+@keyframes slidedown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── INFO BOX ── */
+.info{
+background:var(–gray1);
+border:1px solid var(–gray2);
+border-radius:12px;
+padding:16px;
+margin-bottom:16px;
+font-size:13px;
+line-height:1.6;
+color:var(–gray5);
+}
+
+.hidden{display:none!important}
+*{scrollbar-width:none}
+*::-webkit-scrollbar{display:none}
+</style>
+
+</head>
+<body>
+<div class="toasts" id="toasts"></div>
+
+<div class="app">
+  <!-- Top Bar -->
+  <div class="top">
+    <div class="logo">TaskFlow</div>
+    <button class="sync" onclick="syncData()">
+      <div class="dot" id="dot"></div>
+      <span id="slbl">Sync</span>
+    </button>
+  </div>
+
+  <!-- Content -->
+
+  <div class="content" id="content">
+
+```
+<!-- Dashboard -->
+<div class="pg on" id="pg-dash">
+  <div class="sec">
+    <div class="stats">
+      <div class="stat"><div class="stat-val" id="s1">0</div><div class="stat-lbl">งานทั้งหมด</div></div>
+      <div class="stat"><div class="stat-val" id="s2">0</div><div class="stat-lbl">เสร็จแล้ว</div></div>
+      <div class="stat"><div class="stat-val" id="s3">0</div><div class="stat-lbl">เกินกำหนด</div></div>
+      <div class="stat"><div class="stat-val" id="s4">0</div><div class="stat-lbl">โปรเจค</div></div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sh"><h2>วันนี้</h2><button class="add" onclick="openModal('task')">เพิ่ม</button></div>
+    <div id="d-today"></div>
+  </div>
+
+  <div class="sec">
+    <div class="sh"><h2>โปรเจค</h2></div>
+    <div id="d-projs"></div>
+  </div>
+</div>
+
+<!-- Tasks -->
+<div class="pg" id="pg-tasks">
+  <div class="sec">
+    <div class="sh"><h2>งานทั้งหมด</h2><button class="add" onclick="openModal('task')">เพิ่ม</button></div>
+    <div class="srch"><span style="color:var(--gray4)">🔍</span><input type="text" placeholder="ค้นหา..." id="srch-inp" oninput="renderTasks()"></div>
+    <div class="chips">
+      <button class="chip on" onclick="setF(this,'all')">ทั้งหมด</button>
+      <button class="chip" onclick="setF(this,'todo')">รอทำ</button>
+      <button class="chip" onclick="setF(this,'inprogress')">กำลังทำ</button>
+      <button class="chip" onclick="setF(this,'done')">เสร็จแล้ว</button>
+    </div>
+    <div id="task-list"></div>
+  </div>
+</div>
+
+<!-- Today -->
+<div class="pg" id="pg-today">
+  <div class="sec">
+    <div class="sh"><h2>วันนี้</h2><button class="add" onclick="openModal('task')">เพิ่ม</button></div>
+    <div id="today-list"></div>
+  </div>
+</div>
+
+<!-- Projects -->
+<div class="pg" id="pg-proj">
+  <div class="sec">
+    <div class="sh"><h2>โปรเจค</h2><button class="add" onclick="openModal('proj')">สร้าง</button></div>
+    <div id="proj-list"></div>
+  </div>
+</div>
+
+<!-- Setup -->
+<div class="pg" id="pg-setup">
+  <div class="sec">
+    <div class="sh"><h2>ตั้งค่า</h2></div>
+    <div class="info" id="ok-box" style="display:none">✓ เชื่อมต่อสำเร็จ</div>
+    <div class="info" id="howto-box">
+      <strong>วิธีใช้งาน:</strong><br><br>
+      1. กด Publish ใน Claude artifact<br>
+      2. เปิด URL ที่ได้ใน Safari<br>
+      3. Add to Home Screen<br><br>
+      URL ของคุณใส่ไว้แล้ว กด Sync เพื่อโหลดข้อมูล
+    </div>
+    <div class="fi"><label class="fl">API URL</label><input type="url" class="fin" id="cfg-api" placeholder="https://script.google.com/..."></div>
+    <div class="frow">
+      <div class="fi"><label class="fl">ชื่อ</label><input type="text" class="fin" id="cfg-name" placeholder="ชื่อ"></div>
+      <div class="fi"><label class="fl">Avatar</label><input type="text" class="fin" id="cfg-av" maxlength="1" placeholder="A"></div>
+    </div>
+    <button class="bp" onclick="saveSettings()">บันทึก</button>
+    <button class="bo" onclick="clearAll()">ล้างค่า</button>
+  </div>
+</div>
+```
+
+  </div>
+
+  <!-- Bottom Nav -->
+
+  <nav class="bnav">
+    <div class="ni on" data-p="dash" onclick="go(this,'dash')">หลัก<span class="badge" id="b-dash">0</span></div>
+    <div class="ni" data-p="tasks" onclick="go(this,'tasks')">งาน<span class="badge" id="b-tasks">0</span></div>
+    <div class="ni" data-p="today" onclick="go(this,'today')">วันนี้<span class="badge" id="b-today">0</span></div>
+    <div class="ni" data-p="proj" onclick="go(this,'proj')">โปรเจค</div>
+    <div class="ni" data-p="setup" onclick="go(this,'setup')">ตั้งค่า</div>
+  </nav>
+</div>
+
+<!-- Task Modal -->
+
+<div class="ov" id="ov-task" onclick="closeModal('task')"></div>
+<div class="modal" id="modal-task">
+  <div class="mhandle"></div>
+  <div class="mhead"><h3 id="modal-task-tit">เพิ่มงาน</h3><button class="mclose" onclick="closeModal('task')">✕</button></div>
+  <div class="mbody">
+    <div class="fi"><label class="fl">ชื่องาน</label><input type="text" class="fin" id="t-ti" placeholder="ชื่องาน..."></div>
+    <div class="fi"><label class="fl">โปรเจค</label><select class="fin" id="t-pr"></select></div>
+    <div class="frow">
+      <div class="fi"><label class="fl">สถานะ</label>
+        <select class="fin" id="t-st"><option value="todo">รอทำ</option><option value="inprogress">กำลังทำ</option><option value="done">เสร็จแล้ว</option></select>
+      </div>
+      <div class="fi"><label class="fl">ความสำคัญ</label>
+        <select class="fin" id="t-pi"><option value="high">สูง</option><option value="medium" selected>กลาง</option><option value="low">ต่ำ</option></select>
+      </div>
+    </div>
+    <div class="fi"><label class="fl">กำหนดส่ง</label><input type="date" class="fin" id="t-du"></div>
+    <input type="hidden" id="t-eid">
+    <button class="bp" onclick="saveTask()">บันทึก</button>
+    <button class="bo" onclick="closeModal('task')">ยกเลิก</button>
+  </div>
+</div>
+
+<!-- Project Modal -->
+
+<div class="ov" id="ov-proj" onclick="closeModal('proj')"></div>
+<div class="modal" id="modal-proj">
+  <div class="mhandle"></div>
+  <div class="mhead"><h3>สร้างโปรเจค</h3><button class="mclose" onclick="closeModal('proj')">✕</button></div>
+  <div class="mbody">
+    <div class="fi"><label class="fl">ชื่อโปรเจค</label><input type="text" class="fin" id="p-na" placeholder="ชื่อโปรเจค..."></div>
+    <div class="fi"><label class="fl">คำอธิบาย</label><textarea class="fin" id="p-de" placeholder="คำอธิบาย..."></textarea></div>
+    <div class="fi"><label class="fl">Deadline</label><input type="date" class="fin" id="p-dl"></div>
+    <button class="bp" onclick="saveProj()">บันทึก</button>
+    <button class="bo" onclick="closeModal('proj')">ยกเลิก</button>
+  </div>
+</div>
+
+<script>
+'use strict';
+const API='https://script.google.com/macros/s/AKfycbyfSGhc5nJGWh9FJsKA3HWBijJ5uryoHZfv5buIc8BO4SUYCCfvZpZEcg8hGyQqtqYnAA/exec';
+const S={api:localStorage.getItem('tf_api')||API,tasks:[],projects:[],routines:[],page:'dash',filter:'all'};
+
+addEventListener('DOMContentLoaded',()=>{
+  const av=localStorage.getItem('tf_av')||'A';
+  const nm=localStorage.getItem('tf_name')||'User';
+  const ca=document.getElementById('cfg-api');
+  const cn=document.getElementById('cfg-name');
+  const cav=document.getElementById('cfg-av');
+  if(ca)ca.value=S.api;
+  if(cn)cn.value=nm;
+  if(cav)cav.value=av;
+  const isClaude=location.hostname.includes('claude')||location.hostname.includes('anthropic');
+  if(!isClaude)loadAll();else{go(document.querySelector('[data-p="setup"]'),'setup');toast('กรุณา Publish จาก Claude');}
+});
+
+function go(el,page){
+  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('on'));
+  if(el)el.classList.add('on');
+  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
+  const pg=document.getElementById('pg-'+page);
+  if(pg)pg.classList.add('on');
+  S.page=page;
+  document.getElementById('content').scrollTop=0;
+  const r={tasks:renderTasks,today:renderToday,proj:renderProjs,dash:renderDash};
+  if(r[page])r[page]();
+}
+
+let _n=0;
+function jsonpCall(params){
+  return new Promise((resolve,reject)=>{
+    if(!S.api){reject(new Error('ยังไม่ได้ตั้งค่า URL'));return;}
+    const cb='_cb'+(++_n);
+    const qs=Object.entries(Object.assign({callback:cb},params))
+      .map(([k,v])=>encodeURIComponent(k)+'='+encodeURIComponent(typeof v==='object'?JSON.stringify(v):v))
+      .join('&');
+    const url=S.api+'?'+qs;
+    let done=false;
+    const t=setTimeout(()=>{if(!done){done=true;cleanup();reject(new Error('Timeout'));}},15000);
+    window[cb]=d=>{if(done)return;done=true;clearTimeout(t);cleanup();d&&d.ok?resolve(d.data):reject(new Error(d&&d.error||'API Error'));};
+    const s=document.createElement('script');
+    s.id=cb;s.src=url;
+    s.onerror=()=>{if(!done){done=true;clearTimeout(t);cleanup();reject(new Error('โหลดไม่ได้'));}};
+    function cleanup(){delete window[cb];const el=document.getElementById(cb);if(el)el.remove();}
+    document.head.appendChild(s);
+  });
+}
+
+async function apiCall(action,payload){
+  const params={action};
+  if(payload){params.method='POST';params.payload=JSON.stringify(payload);}
+  return jsonpCall(params).catch(e=>{toast('❌ '+e.message);return null;});
+}
+
+async function loadAll(){
+  setSyncing(true);
+  const d=await apiCall('getAll');
+  if(d){
+    S.tasks=(d.tasks||[]).map(nr);
+    S.projects=(d.projects||[]).map(nr);
+    S.routines=(d.routines||[]).map(nr);
+    refreshBadges();renderDash();
+    toast('✓ โหลดข้อมูลแล้ว');
+    const ob=document.getElementById('ok-box');
+    if(ob){ob.style.display='block';ob.textContent='✓ เชื่อมต่อสำเร็จ';}
+    const hb=document.getElementById('howto-box');
+    if(hb)hb.style.display='none';
+  }
+  setSyncing(false);
+}
+async function syncData(){await loadAll();}
+
+function nr(o){const r={};for(const k in o){const v=o[k];r[k]=(v instanceof Date)?v.toISOString().slice(0,10):v;}return r;}
+
+function setSyncing(on){
+  const dot=document.getElementById('dot');
+  const lbl=document.getElementById('slbl');
+  dot.className='dot'+(on?' busy':'');
+  lbl.textContent=on?'กำลังซิงค์...':'Sync';
+}
+
+function today(){return new Date().toISOString().slice(0,10);}
+function toTH(s){if(!s)return '';const[y,m,d]=String(s).split('-');const mn=['','ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];return(d||'')+' '+(mn[+m]||'');}
+function pName(id){const p=S.projects.find(x=>x.id===id);return p?p.name:'';}
+function progOf(pid){const t=S.tasks.filter(x=>x.project_id===pid&&String(x.is_routine).toUpperCase()!=='TRUE');if(!t.length)return 0;return Math.round(t.filter(x=>x.status==='done').length/t.length*100);}
+function todayT(){return S.tasks.filter(t=>t.due_date&&String(t.due_date).slice(0,10)===today()&&String(t.is_routine).toUpperCase()!=='TRUE');}
+function activeT(){return S.tasks.filter(t=>t.status!=='done'&&String(t.is_routine).toUpperCase()!=='TRUE');}
+function overT(){const t=today();return S.tasks.filter(x=>x.due_date&&String(x.due_date).slice(0,10)<t&&x.status!=='done');}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+function refreshBadges(){
+  const a=activeT().length,td=todayT().filter(t=>t.status!=='done').length;
+  const bt=document.getElementById('b-tasks'),bto=document.getElementById('b-today');
+  bt.textContent=a;bt.className='badge'+(a>0?' show':'');
+  bto.textContent=td;bto.className='badge'+(td>0?' show':'');
+}
+
+function renderDash(){
+  const tt=todayT(),at=activeT(),ov=overT();
+  const total=S.tasks.filter(t=>String(t.is_routine).toUpperCase()!=='TRUE').length;
+  const done=S.tasks.filter(t=>t.status==='done').length;
+  document.getElementById('s1').textContent=total;
+  document.getElementById('s2').textContent=done;
+  document.getElementById('s3').textContent=ov.length;
+  document.getElementById('s4').textContent=S.projects.length;
+  document.getElementById('d-today').innerHTML=taskCards(tt.slice(0,5))||emptyH('📭','ไม่มีงานวันนี้');
+  document.getElementById('d-projs').innerHTML=projCards(S.projects);
+  animProg();
+}
+
+function renderTasks(){
+  const q=(document.getElementById('srch-inp').value||'').toLowerCase();
+  let t=S.tasks.filter(x=>String(x.is_routine).toUpperCase()!=='TRUE');
+  if(q)t=t.filter(x=>String(x.title).toLowerCase().includes(q));
+  if(S.filter!=='all')t=t.filter(x=>x.status===S.filter);
+  document.getElementById('task-list').innerHTML=taskCards(t)||emptyH('📭','ไม่พบงาน');
+}
+function setF(btn,val){S.filter=val;document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));btn.classList.add('on');renderTasks();}
+
+function renderToday(){
+  const tt=todayT();
+  document.getElementById('today-list').innerHTML=taskCards(tt)||emptyH('📅','ไม่มีงานวันนี้');
+}
+
+function renderProjs(){document.getElementById('proj-list').innerHTML=projCards(S.projects,true);animProg();}
+
+function taskCards(tasks){
+  if(!tasks||!tasks.length)return '';
+  return tasks.map(t=>{
+    const duestr=t.due_date?toTH(t.due_date):'';
+    const proj=t.project_id?pName(t.project_id):'';
+    return`<div class="task ${t.status==='done'?'done':''}" onclick="editTask('${esc(t.id)}')">
+      <button class="ck ${t.status==='done'?'on':''}" onclick="toggleDone(event,'${esc(t.id)}')"></button>
+      <div class="tbody">
+        <div class="ttitle ${t.status==='done'?'s':''}">${esc(t.title)}</div>
+        <div class="tmeta">
+          ${proj?`<span class="tag">${esc(proj)}</span>`:''}
+          ${duestr?`<span class="tag ${String(t.due_date).slice(0,10)<today()?'due':''}">${duestr}</span>`:''}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function projCards(projs,addNew=false){
+  if(!projs.length&&!addNew)return emptyH('🗂️','ยังไม่มีโปรเจค');
+  let h=projs.map(p=>{
+    const pct=progOf(p.id);
+    return`<div class="proj">
+      <div class="pname">${esc(p.name)}</div>
+      <div class="pdesc">${esc(p.description||'')}</div>
+      <div class="prog"><div class="progf" data-w="${pct}"></div></div>
+      <div class="pmeta">
+        <span>${pct}% เสร็จ</span>
+        <span>${S.tasks.filter(t=>t.project_id===p.id).length} งาน</span>
+      </div>
+    </div>`;
+  }).join('');
+  if(addNew)h+=`<div class="proj" style="border-style:dashed;opacity:.5" onclick="openModal('proj')"><div style="text-align:center;padding:20px 0">+ สร้างโปรเจคใหม่</div></div>`;
+  return h;
+}
+
+function emptyH(ic,txt){return`<div class="empty"><div class="empty-ic">${ic}</div><div class="empty-txt">${txt}</div></div>`;}
+function animProg(){setTimeout(()=>{document.querySelectorAll('.progf[data-w]').forEach(e=>{e.style.width=e.dataset.w+'%';});},60);}
+
+async function toggleDone(e,id){
+  e.stopPropagation();
+  const t=S.tasks.find(x=>x.id===id);if(!t)return;
+  const ns=t.status==='done'?'todo':'done';t.status=ns;refreshBadges();
+  const pg=S.page;
+  if(pg==='dash')renderDash();else if(pg==='tasks')renderTasks();else if(pg==='today')renderToday();
+  const r=await apiCall('update',{action:'update',sheet:'Tasks',id,data:{status:ns}});
+  if(!r)t.status=ns==='done'?'todo':'done';
+  else toast(ns==='done'?'✓ เสร็จแล้ว':'○ เปิดอีกครั้ง');
+}
+
+function editTask(id){const t=S.tasks.find(x=>x.id===id);if(t)openModal('task',t);}
+
+function openModal(type,task=null){
+  if(type==='task'){
+    const sel=document.getElementById('t-pr');
+    sel.innerHTML='<option value="">— ไม่ระบุ —</option>'+S.projects.map(p=>`<option value="${esc(p.id)}">${esc(p.name)}</option>`).join('');
+    if(task){
+      document.getElementById('modal-task-tit').textContent='แก้ไขงาน';
+      document.getElementById('t-ti').value=task.title||'';
+      document.getElementById('t-pr').value=task.project_id||'';
+      document.getElementById('t-pi').value=task.priority||'medium';
+      document.getElementById('t-du').value=String(task.due_date||'').slice(0,10);
+      document.getElementById('t-st').value=task.status||'todo';
+      document.getElementById('t-eid').value=task.id;
+    }else{
+      document.getElementById('modal-task-tit').textContent='เพิ่มงาน';
+      ['t-ti','t-eid'].forEach(id=>document.getElementById(id).value='');
+      document.getElementById('t-pr').value='';
+      document.getElementById('t-pi').value='medium';
+      document.getElementById('t-du').value='';
+      document.getElementById('t-st').value='todo';
+    }
+  }
+  document.getElementById('ov-'+type).classList.add('on');
+  document.getElementById('modal-'+type).classList.add('on');
+}
+
+function closeModal(type){
+  document.getElementById('ov-'+type).classList.remove('on');
+  document.getElementById('modal-'+type).classList.remove('on');
+}
+
+async function saveTask(){
+  const title=document.getElementById('t-ti').value.trim();
+  if(!title){toast('กรุณาใส่ชื่องาน');return;}
+  const data={title,project_id:document.getElementById('t-pr').value,priority:document.getElementById('t-pi').value,due_date:document.getElementById('t-du').value,status:document.getElementById('t-st').value,is_routine:'FALSE',routine_freq:'',routine_days:'',description:'',time_start:'',duration_min:''};
+  const eid=document.getElementById('t-eid').value;
+  closeModal('task');
+  if(eid){const r=await apiCall('update',{action:'update',sheet:'Tasks',id:eid,data});if(r){const i=S.tasks.findIndex(t=>t.id===eid);if(i>-1)Object.assign(S.tasks[i],data);toast('✓ อัปเดตแล้ว');}}
+  else{const r=await apiCall('create',{action:'create',sheet:'Tasks',data});if(r){S.tasks.push(nr(r));toast('✓ เพิ่มงานแล้ว');}}
+  refreshBadges();
+  const pg=S.page;if(pg==='dash')renderDash();else if(pg==='tasks')renderTasks();else if(pg==='today')renderToday();
+}
+
+async function saveProj(){
+  const name=document.getElementById('p-na').value.trim();if(!name){toast('กรุณาใส่ชื่อ');return;}
+  const data={name,description:document.getElementById('p-de').value,emoji:'',color:'',deadline:document.getElementById('p-dl').value,members:'',status:'active'};
+  closeModal('proj');
+  const r=await apiCall('create',{action:'create',sheet:'Projects',data});
+  if(r){S.projects.push(nr(r));toast('✓ สร้างแล้ว');}
+  if(S.page==='proj')renderProjs();if(S.page==='dash')renderDash();
+}
+
+function saveSettings(){
+  const url=document.getElementById('cfg-api').value.trim();if(!url){toast('กรุณากรอก URL');return;}
+  S.api=url;localStorage.setItem('tf_api',url);
+  const nm=document.getElementById('cfg-name').value.trim()||'User';
+  const av=document.getElementById('cfg-av').value.trim()||'A';
+  localStorage.setItem('tf_name',nm);localStorage.setItem('tf_av',av);
+  toast('✓ บันทึกแล้ว — กำลังโหลด...');
+  loadAll();go(document.querySelector('[data-p="dash"]'),'dash');
+}
+
+function clearAll(){
+  if(!confirm('ล้างค่าทั้งหมด?'))return;
+  localStorage.clear();S.api=API;S.tasks=[];S.projects=[];S.routines=[];
+  document.getElementById('cfg-api').value=API;
+  toast('✓ ล้างแล้ว');
+}
+
+function toast(msg){
+  const w=document.getElementById('toasts');const el=document.createElement('div');
+  el.className='toast';el.textContent=msg;w.prepend(el);
+  setTimeout(()=>{el.style.transition='opacity .3s';el.style.opacity='0';setTimeout(()=>el.remove(),300);},2500);
+}
+</script>
+
+</body>
+</html>
