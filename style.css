@@ -10,19 +10,19 @@ TaskFlow — Modern Orange & Black Theme
   }
 
 :root {
-–orange: #FF6B35;
-–orange-dark: #E85A2B;
-–orange-light: #FF8C5A;
-–black: #1A1A1A;
-–black-soft: #2D2D2D;
-–white: #FFFFFF;
-–gray-1: #F5F5F5;
-–gray-2: #E0E0E0;
-–gray-3: #BDBDBD;
-–gray-4: #757575;
+-- orange: #FF6B35;
+-- orange-dark: #E85A2B;
+-- orange-light: #FF8C5A;
+-- black: #1A1A1A;
+-- black-soft: #2D2D2D;
+-- white: #FFFFFF;
+-- gray-1: #F5F5F5;
+-- gray-2: #E0E0E0;
+-- gray-3: #BDBDBD;
+-- gray-4: #757575;
 
-–shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
-–shadow-md: 0 4px 16px rgba(0,0,0,0.12);
+-- shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+-- shadow-md: 0 4px 16px rgba(0,0,0,0.12);
 –shadow-lg: 0 8px 32px rgba(0,0,0,0.16);
 
 –radius: 16px;
