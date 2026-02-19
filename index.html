@@ -2,183 +2,136 @@
 
 <html lang="th">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="theme-color" content="#ffffff">
-  <title>TaskFlow</title>
-
-  <link rel="stylesheet" href="style.css">
-
-  <!-- Google Fonts -->
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#2563EB">
+<title>TaskFlow Pro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style-pro.css">
 </head>
-
 <body>
-
 <div class="toasts" id="toasts"></div>
-
 <div class="app">
-  <!-- Top Bar -->
-  <div class="top">
-    <div class="logo">TaskFlow</div>
-    <button class="sync" onclick="syncData()">
-      <div class="dot" id="dot"></div>
-      <span id="slbl">Sync</span>
-    </button>
-  </div>
+<header class="header">
+<h1 class="logo">TaskFlow</h1>
+<button class="sync-btn" onclick="syncData()">
+<span class="sync-dot" id="dot"></span>
+<span id="slbl">Sync</span>
+</button>
+</header>
 
-  <!-- Content -->
+<main class="content" id="content">
 
-  <div class="content" id="content">
-
-```
 <!-- Dashboard -->
+
 <div class="pg on" id="pg-dash">
-  <div class="sec">
-    <div class="stats">
-      <div class="stat"><div class="stat-val" id="s1">0</div><div class="stat-lbl">งานทั้งหมด</div></div>
-      <div class="stat"><div class="stat-val" id="s2">0</div><div class="stat-lbl">เสร็จแล้ว</div></div>
-      <div class="stat"><div class="stat-val" id="s3">0</div><div class="stat-lbl">เกินกำหนด</div></div>
-      <div class="stat"><div class="stat-val" id="s4">0</div><div class="stat-lbl">โปรเจค</div></div>
-    </div>
-  </div>
+<div class="stats-grid">
+<div class="stat-card"><div class="stat-val" id="s1">0</div><div class="stat-lbl">งานทั้งหมด</div></div>
+<div class="stat-card"><div class="stat-val c-success" id="s2">0</div><div class="stat-lbl">เสร็จแล้ว</div></div>
+<div class="stat-card"><div class="stat-val c-danger" id="s3">0</div><div class="stat-lbl">เกินกำหนด</div></div>
+<div class="stat-card"><div class="stat-val c-primary" id="s4">0</div><div class="stat-lbl">โปรเจค</div></div>
+</div>
 
-  <div class="sec">
-    <div class="sh"><h2>วันนี้</h2><button class="add" onclick="openModal('task')">เพิ่ม</button></div>
-    <div id="d-today"></div>
-  </div>
+<div class="sec">
+<div class="sh"><h2>วันนี้</h2><button class="btn-primary" onclick="openModal('task')">+ เพิ่ม</button></div>
+<div id="d-today"></div>
+</div>
 
-  <div class="sec">
-    <div class="sh"><h2>โปรเจค</h2></div>
-    <div id="d-projs"></div>
-  </div>
+<div class="sec">
+<div class="sh"><h2>โปรเจค</h2></div>
+<div id="d-projs"></div>
+</div>
 </div>
 
 <!-- Tasks -->
+
 <div class="pg" id="pg-tasks">
-  <div class="sec">
-    <div class="sh"><h2>งานทั้งหมด</h2><button class="add" onclick="openModal('task')">เพิ่ม</button></div>
-    <div class="srch">
-      <span style="color:var(--gray4)">🔍</span>
-      <input type="text" placeholder="ค้นหา..." id="srch-inp" oninput="renderTasks()">
-    </div>
-    <div class="chips">
-      <button class="chip on" onclick="setF(this,'all')">ทั้งหมด</button>
-      <button class="chip" onclick="setF(this,'todo')">รอทำ</button>
-      <button class="chip" onclick="setF(this,'inprogress')">กำลังทำ</button>
-      <button class="chip" onclick="setF(this,'done')">เสร็จแล้ว</button>
-    </div>
-    <div id="task-list"></div>
-  </div>
+<div class="sh"><h2>งานทั้งหมด</h2><button class="btn-primary" onclick="openModal('task')">+ เพิ่ม</button></div>
+<div class="srch"><span>🔍</span><input type="text" placeholder="ค้นหา..." id="srch-inp" oninput="renderTasks()"></div>
+<div class="chips">
+<button class="chip on" onclick="setF(this,'all')">ทั้งหมด</button>
+<button class="chip" onclick="setF(this,'todo')">รอทำ</button>
+<button class="chip" onclick="setF(this,'inprogress')">กำลังทำ</button>
+<button class="chip" onclick="setF(this,'done')">เสร็จแล้ว</button>
+</div>
+<div id="task-list"></div>
 </div>
 
 <!-- Today -->
+
 <div class="pg" id="pg-today">
-  <div class="sec">
-    <div class="sh"><h2>วันนี้</h2><button class="add" onclick="openModal('task')">เพิ่ม</button></div>
-    <div id="today-list"></div>
-  </div>
+<div class="sh"><h2>วันนี้</h2><button class="btn-primary" onclick="openModal('task')">+ เพิ่ม</button></div>
+<div id="today-list"></div>
 </div>
 
 <!-- Projects -->
+
 <div class="pg" id="pg-proj">
-  <div class="sec">
-    <div class="sh"><h2>โปรเจค</h2><button class="add" onclick="openModal('proj')">สร้าง</button></div>
-    <div id="proj-list"></div>
-  </div>
+<div class="sh"><h2>โปรเจค</h2><button class="btn-primary" onclick="openModal('proj')">+ สร้าง</button></div>
+<div id="proj-list"></div>
 </div>
 
-<!-- Setup -->
+<!-- Settings -->
+
 <div class="pg" id="pg-setup">
-  <div class="sec">
-    <div class="sh"><h2>ตั้งค่า</h2></div>
-    <div class="info" id="ok-box" style="display:none">✓ เชื่อมต่อสำเร็จ</div>
-    <div class="info" id="howto-box">
-      <strong>วิธีใช้งาน:</strong><br><br>
-      1. เปิดเว็บจาก GitHub Pages<br>
-      2. Add to Home Screen<br>
-      3. กด Sync เพื่อโหลดข้อมูล
-    </div>
-    <div class="fi"><label class="fl">API URL</label><input type="url" class="fin" id="cfg-api"></div>
-    <div class="frow">
-      <div class="fi"><label class="fl">ชื่อ</label><input type="text" class="fin" id="cfg-name"></div>
-      <div class="fi"><label class="fl">Avatar</label><input type="text" class="fin" id="cfg-av" maxlength="1"></div>
-    </div>
-    <button class="bp" onclick="saveSettings()">บันทึก</button>
-    <button class="bo" onclick="clearAll()">ล้างค่า</button>
-  </div>
+<h2 class="pg-tit">ตั้งค่า</h2>
+<div class="info ok" id="ok-box" style="display:none">✓ เชื่อมต่อสำเร็จ</div>
+<div class="card">
+<div class="fi"><label class="fl">API URL</label><input type="url" class="fin" id="cfg-api"></div>
+<div class="frow">
+<div class="fi"><label class="fl">ชื่อ</label><input type="text" class="fin" id="cfg-name"></div>
+<div class="fi"><label class="fl">Avatar</label><input type="text" class="fin" id="cfg-av" maxlength="1"></div>
 </div>
-```
-
-  </div>
-
-  <!-- Bottom Nav -->
-
-  <nav class="bnav">
-    <div class="ni on" data-p="dash" onclick="go(this,'dash')">หลัก<span class="badge" id="b-dash">0</span></div>
-    <div class="ni" data-p="tasks" onclick="go(this,'tasks')">งาน<span class="badge" id="b-tasks">0</span></div>
-    <div class="ni" data-p="today" onclick="go(this,'today')">วันนี้<span class="badge" id="b-today">0</span></div>
-    <div class="ni" data-p="proj" onclick="go(this,'proj')">โปรเจค</div>
-    <div class="ni" data-p="setup" onclick="go(this,'setup')">ตั้งค่า</div>
-  </nav>
+<button class="btn-primary btn-block" onclick="saveSettings()">บันทึก</button>
+<button class="btn-outline btn-block" onclick="clearAll()">ล้างค่า</button>
+</div>
 </div>
 
-<!-- Task Modal -->
+</main>
+
+<nav class="bnav">
+<button class="ni on" data-p="dash" onclick="go(this,'dash')">หลัก<span class="badge" id="b-dash">0</span></button>
+<button class="ni" data-p="tasks" onclick="go(this,'tasks')">งาน<span class="badge" id="b-tasks">0</span></button>
+<button class="ni" data-p="today" onclick="go(this,'today')">วันนี้<span class="badge" id="b-today">0</span></button>
+<button class="ni" data-p="proj" onclick="go(this,'proj')">โปรเจค</button>
+<button class="ni" data-p="setup" onclick="go(this,'setup')">ตั้งค่า</button>
+</nav>
+</div>
+
+<!-- Modals -->
 
 <div class="ov" id="ov-task" onclick="closeModal('task')"></div>
 <div class="modal" id="modal-task">
-  <div class="mhandle"></div>
-  <div class="mhead">
-    <h3 id="modal-task-tit">เพิ่มงาน</h3>
-    <button class="mclose" onclick="closeModal('task')">✕</button>
-  </div>
-  <div class="mbody">
-    <div class="fi"><label class="fl">ชื่องาน</label><input type="text" class="fin" id="t-ti" placeholder="ชื่องาน..."></div>
-    <div class="fi"><label class="fl">โปรเจค</label><select class="fin" id="t-pr"></select></div>
-    <div class="frow">
-      <div class="fi"><label class="fl">สถานะ</label>
-        <select class="fin" id="t-st">
-          <option value="todo">รอทำ</option>
-          <option value="inprogress">กำลังทำ</option>
-          <option value="done">เสร็จแล้ว</option>
-        </select>
-      </div>
-      <div class="fi"><label class="fl">ความสำคัญ</label>
-        <select class="fin" id="t-pi">
-          <option value="high">สูง</option>
-          <option value="medium" selected>กลาง</option>
-          <option value="low">ต่ำ</option>
-        </select>
-      </div>
-    </div>
-    <div class="fi"><label class="fl">กำหนดส่ง</label><input type="date" class="fin" id="t-du"></div>
-    <input type="hidden" id="t-eid">
-    <button class="bp" onclick="saveTask()">บันทึก</button>
-    <button class="bo" onclick="closeModal('task')">ยกเลิก</button>
-  </div>
+<div class="mh"></div>
+<div class="mhead"><h3 id="modal-task-tit">เพิ่มงาน</h3><button class="mx" onclick="closeModal('task')">×</button></div>
+<div class="mbody">
+<div class="fi"><label class="fl">ชื่องาน</label><input type="text" class="fin" id="t-ti"></div>
+<div class="fi"><label class="fl">โปรเจค</label><select class="fin" id="t-pr"></select></div>
+<div class="frow">
+<div class="fi"><label class="fl">สถานะ</label><select class="fin" id="t-st"><option value="todo">รอทำ</option><option value="inprogress">กำลังทำ</option><option value="done">เสร็จแล้ว</option></select></div>
+<div class="fi"><label class="fl">ความสำคัญ</label><select class="fin" id="t-pi"><option value="high">สูง</option><option value="medium" selected>กลาง</option><option value="low">ต่ำ</option></select></div>
 </div>
-
-<!-- Project Modal -->
+<div class="fi"><label class="fl">กำหนดส่ง</label><input type="date" class="fin" id="t-du"></div>
+<input type="hidden" id="t-eid">
+<button class="btn-primary btn-block" onclick="saveTask()">บันทึก</button>
+<button class="btn-outline btn-block" onclick="closeModal('task')">ยกเลิก</button>
+</div>
+</div>
 
 <div class="ov" id="ov-proj" onclick="closeModal('proj')"></div>
 <div class="modal" id="modal-proj">
-  <div class="mhandle"></div>
-  <div class="mhead">
-    <h3>สร้างโปรเจค</h3>
-    <button class="mclose" onclick="closeModal('proj')">✕</button>
-  </div>
-  <div class="mbody">
-    <div class="fi"><label class="fl">ชื่อโปรเจค</label><input type="text" class="fin" id="p-na" placeholder="ชื่อโปรเจค..."></div>
-    <div class="fi"><label class="fl">คำอธิบาย</label><textarea class="fin" id="p-de" placeholder="คำอธิบาย..."></textarea></div>
-    <div class="fi"><label class="fl">Deadline</label><input type="date" class="fin" id="p-dl"></div>
-    <button class="bp" onclick="saveProj()">บันทึก</button>
-    <button class="bo" onclick="closeModal('proj')">ยกเลิก</button>
-  </div>
+<div class="mh"></div>
+<div class="mhead"><h3>สร้างโปรเจค</h3><button class="mx" onclick="closeModal('proj')">×</button></div>
+<div class="mbody">
+<div class="fi"><label class="fl">ชื่อโปรเจค</label><input type="text" class="fin" id="p-na"></div>
+<div class="fi"><label class="fl">คำอธิบาย</label><textarea class="fin" id="p-de" rows="3"></textarea></div>
+<div class="fi"><label class="fl">Deadline</label><input type="date" class="fin" id="p-dl"></div>
+<button class="btn-primary btn-block" onclick="saveProj()">บันทึก</button>
+<button class="btn-outline btn-block" onclick="closeModal('proj')">ยกเลิก</button>
+</div>
 </div>
 
 <script src="script.js"></script>
