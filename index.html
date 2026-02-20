@@ -12,755 +12,126 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent;
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#1A1A1A;--card:#2D2D2D;--black:#000;--white:#FFF;--gray:#9E9E9E;--light:#E0E0E0;
+  --orange:#FF6B35;--search:#F5F5F5;--border:rgba(255,255,255,0.1);
+  --sb:env(safe-area-inset-bottom,0px);--st:env(safe-area-inset-top,0px);
 }
-
-:root {
-–bg-dark: #1A1A1A;
-–bg-card: #2D2D2D;
-–bg-black: #000000;
-–text-white: #FFFFFF;
-–text-gray: #9E9E9E;
-–text-light: #E0E0E0;
-–accent: #FF6B35;
-–search-bg: #F5F5F5;
-–border: rgba(255,255,255,0.1);
-
-–shadow-sm: 0 2px 8px rgba(0,0,0,0.3);
-–shadow-md: 0 4px 16px rgba(0,0,0,0.4);
-–shadow-lg: 0 8px 32px rgba(0,0,0,0.5);
-
-–radius-xl: 24px;
-–radius-lg: 20px;
-–radius-md: 16px;
-–radius-sm: 12px;
-
-–sb: env(safe-area-inset-bottom, 0px);
-–st: env(safe-area-inset-top, 0px);
-}
-
-html, body {
-height: 100%;
-font-family: ‘Inter’, -apple-system, sans-serif;
-font-size: 15px;
-background: var(–bg-dark);
-color: var(–text-white);
--webkit-font-smoothing: antialiased;
-overflow: hidden;
-}
-
-/* APP */
-.app {
-display: flex;
-flex-direction: column;
-height: 100%;
-max-width: 480px;
-margin: 0 auto;
-background: var(–bg-dark);
-}
+html,body{height:100%;font-family:'Inter',-apple-system,sans-serif;font-size:15px;background:var(--bg);color:var(--white);-webkit-font-smoothing:antialiased;overflow:hidden}
+.app{display:flex;flex-direction:column;height:100%;max-width:480px;margin:0 auto;background:var(--bg)}
 
 /* HEADER */
-.header {
-background: var(–bg-card);
-padding: calc(var(–st) + 16px) 20px 20px;
-border-radius: 0 0 var(–radius-xl) var(–radius-xl);
-box-shadow: var(–shadow-md);
-}
-
-.header-top {
-display: flex;
-align-items: center;
-justify-content: space-between;
-margin-bottom: 16px;
-}
-
-.menu-btn {
-width: 40px;
-height: 40px;
-background: var(–bg-black);
-border: none;
-border-radius: var(–radius-sm);
-color: var(–text-white);
-font-size: 20px;
-cursor: pointer;
-display: flex;
-align-items: center;
-justify-content: center;
-}
-
-.profile {
-display: flex;
-align-items: center;
-gap: 12px;
-}
-
-.avatar {
-width: 44px;
-height: 44px;
-border-radius: 50%;
-background: var(–accent);
-display: flex;
-align-items: center;
-justify-content: center;
-font-size: 18px;
-font-weight: 700;
-color: var(–text-white);
-}
-
-.profile-info {
-flex: 1;
-}
-
-.profile-name {
-font-size: 14px;
-font-weight: 600;
-color: var(–text-white);
-margin-bottom: 2px;
-}
-
-.profile-link {
-font-size: 11px;
-color: var(–text-gray);
-}
-
-.balance {
-text-align: right;
-}
-
-.balance-label {
-font-size: 11px;
-color: var(–text-gray);
-margin-bottom: 2px;
-}
-
-.balance-amount {
-font-size: 18px;
-font-weight: 700;
-color: var(–text-white);
-}
-
-.stats {
-display: grid;
-grid-template-columns: repeat(3, 1fr);
-gap: 12px;
-margin-top: 16px;
-}
-
-.stat {
-text-align: center;
-padding: 12px 8px;
-background: var(–bg-dark);
-border-radius: var(–radius-sm);
-}
-
-.stat-num {
-font-size: 24px;
-font-weight: 800;
-color: var(–text-white);
-line-height: 1;
-margin-bottom: 4px;
-}
-
-.stat-label {
-font-size: 11px;
-color: var(–text-gray);
-font-weight: 500;
-}
+.hd{background:var(–card);padding:calc(var(–st) + 16px) 20px 20px;border-radius:0 0 24px 24px;box-shadow:0 4px 16px rgba(0,0,0,0.4)}
+.hd-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.menu{width:40px;height:40px;background:var(–black);border:none;border-radius:12px;color:var(–white);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.prof{display:flex;align-items:center;gap:12px}
+.av{width:44px;height:44px;border-radius:50%;background:var(–orange);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:var(–white)}
+.prof-info{flex:1}
+.prof-name{font-size:14px;font-weight:600;color:var(–white);margin-bottom:2px}
+.prof-sub{font-size:11px;color:var(–gray)}
+.bal{text-align:right}
+.bal-lbl{font-size:11px;color:var(–gray);margin-bottom:2px}
+.bal-amt{font-size:18px;font-weight:700;color:var(–white)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}
+.stat{text-align:center;padding:12px 8px;background:var(–bg);border-radius:12px}
+.stat-n{font-size:24px;font-weight:800;color:var(–white);line-height:1;margin-bottom:4px}
+.stat-l{font-size:11px;color:var(–gray);font-weight:500}
 
 /* MAIN */
-.main {
-flex: 1;
-overflow-y: auto;
--webkit-overflow-scrolling: touch;
-padding: 20px 20px calc(80px + var(–sb));
-}
-
-.pg {
-display: none;
-}
-
-.pg.on {
-display: block;
-animation: fadeIn 0.3s;
-}
-
-@keyframes fadeIn {
-from { opacity: 0; transform: translateY(10px); }
-to { opacity: 1; transform: translateY(0); }
-}
+.main{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:20px 20px calc(80px + var(–sb))}
+.pg{display:none}.pg.on{display:block;animation:fadeIn .3s}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
 /* SEARCH */
-.search {
-background: var(–search-bg);
-border-radius: var(–radius-lg);
-padding: 14px 16px;
-display: flex;
-align-items: center;
-gap: 12px;
-margin-bottom: 20px;
-box-shadow: var(–shadow-sm);
-}
-
-.search-icon {
-font-size: 16px;
-color: var(–text-gray);
-}
-
-.search input {
-flex: 1;
-border: none;
-outline: none;
-background: none;
-font-family: ‘Inter’, sans-serif;
-font-size: 14px;
-color: var(–bg-dark);
-}
-
-.search input::placeholder {
-color: #9E9E9E;
-}
+.srch{background:var(–search);border-radius:20px;padding:14px 16px;display:flex;align-items:center;gap:12px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,0.3)}
+.srch input{flex:1;border:none;outline:none;background:none;font-family:‘Inter’,sans-serif;font-size:14px;color:var(–bg)}
+.srch input::placeholder{color:#9E9E9E}
 
 /* FILTERS */
-.filters {
-display: flex;
-gap: 8px;
-overflow-x: auto;
-margin-bottom: 20px;
-padding-bottom: 4px;
-scrollbar-width: none;
-}
-
-.filters::-webkit-scrollbar {
-display: none;
-}
-
-.filter {
-flex-shrink: 0;
-padding: 10px 20px;
-background: var(–bg-card);
-border: 2px solid transparent;
-border-radius: var(–radius-lg);
-font-size: 13px;
-font-weight: 600;
-color: var(–text-light);
-cursor: pointer;
-font-family: ‘Inter’, sans-serif;
-transition: all 0.2s;
-}
-
-.filter.on {
-background: var(–bg-black);
-border-color: var(–accent);
-color: var(–text-white);
-}
+.flt{display:flex;gap:8px;overflow-x:auto;margin-bottom:20px;padding-bottom:4px;scrollbar-width:none}
+.flt::-webkit-scrollbar{display:none}
+.flt button{flex-shrink:0;padding:10px 20px;background:var(–card);border:2px solid transparent;border-radius:20px;font-size:13px;font-weight:600;color:var(–light);cursor:pointer;font-family:‘Inter’,sans-serif;transition:all .2s}
+.flt button.on{background:var(–black);border-color:var(–orange);color:var(–white)}
 
 /* SECTION */
-.sec {
-margin-bottom: 28px;
-}
+.sec{margin-bottom:28px}
+.sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.st{font-size:18px;font-weight:700;color:var(–white)}
+.ba{padding:8px 18px;background:var(–orange);color:var(–white);border:none;border-radius:20px;font-size:13px;font-weight:600;cursor:pointer;font-family:‘Inter’,sans-serif;transition:all .2s}
+.ba:active{transform:scale(.95)}
 
-.sec-head {
-display: flex;
-align-items: center;
-justify-content: space-between;
-margin-bottom: 16px;
-}
+/* TASKS */
+.tc{background:var(–black);border-radius:20px;padding:16px;margin-bottom:12px;box-shadow:0 4px 16px rgba(0,0,0,0.4);cursor:pointer;transition:all .2s;display:flex;gap:12px;align-items:flex-start}
+.tc:active{transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,0.5)}
+.ck{width:24px;height:24px;border:3px solid var(–gray);border-radius:50%;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.ck.on{background:var(–orange);border-color:var(–orange)}
+.ck.on::after{content:‘✓’;color:var(–white);font-size:14px;font-weight:800}
+.tb{flex:1;min-width:0}
+.tt{font-size:15px;font-weight:600;color:var(–white);margin-bottom:6px;line-height:1.4}
+.tt.s{text-decoration:line-through;color:var(–gray)}
+.tm{display:flex;flex-wrap:wrap;gap:8px;font-size:12px;color:var(–gray)}
+.tg{padding:4px 10px;background:var(–card);border-radius:12px;font-weight:500}
+.tg.due{background:var(–orange);color:var(–white)}
 
-.sec-title {
-font-size: 18px;
-font-weight: 700;
-color: var(–text-white);
-}
-
-.btn-add {
-padding: 8px 18px;
-background: var(–accent);
-color: var(–text-white);
-border: none;
-border-radius: var(–radius-lg);
-font-size: 13px;
-font-weight: 600;
-cursor: pointer;
-font-family: ‘Inter’, sans-serif;
-transition: all 0.2s;
-}
-
-.btn-add:active {
-transform: scale(0.95);
-}
-
-/* TASK CARDS */
-.task-card {
-background: var(–bg-black);
-border-radius: var(–radius-lg);
-padding: 16px;
-margin-bottom: 12px;
-box-shadow: var(–shadow-md);
-cursor: pointer;
-transition: all 0.2s;
-display: flex;
-gap: 12px;
-align-items: flex-start;
-}
-
-.task-card:active {
-transform: translateY(-2px);
-box-shadow: var(–shadow-lg);
-}
-
-.task-check {
-width: 24px;
-height: 24px;
-border: 3px solid var(–text-gray);
-border-radius: 50%;
-flex-shrink: 0;
-margin-top: 2px;
-display: flex;
-align-items: center;
-justify-content: center;
-transition: all 0.2s;
-}
-
-.task-check.done {
-background: var(–accent);
-border-color: var(–accent);
-}
-
-.task-check.done::after {
-content: ‘✓’;
-color: var(–text-white);
-font-size: 14px;
-font-weight: 800;
-}
-
-.task-body {
-flex: 1;
-min-width: 0;
-}
-
-.task-title {
-font-size: 15px;
-font-weight: 600;
-color: var(–text-white);
-margin-bottom: 6px;
-line-height: 1.4;
-}
-
-.task-title.done {
-text-decoration: line-through;
-color: var(–text-gray);
-}
-
-.task-meta {
-display: flex;
-flex-wrap: wrap;
-gap: 8px;
-font-size: 12px;
-color: var(–text-gray);
-}
-
-.task-tag {
-padding: 4px 10px;
-background: var(–bg-card);
-border-radius: var(–radius-sm);
-font-weight: 500;
-}
-
-.task-tag.due {
-background: var(–accent);
-color: var(–text-white);
-}
-
-/* PROJECT CARDS */
-.proj-card {
-background: var(–bg-black);
-border-radius: var(–radius-lg);
-padding: 20px;
-margin-bottom: 16px;
-box-shadow: var(–shadow-md);
-cursor: pointer;
-transition: all 0.2s;
-position: relative;
-overflow: hidden;
-}
-
-.proj-card::before {
-content: ‘’;
-position: absolute;
-left: 0;
-top: 0;
-width: 4px;
-height: 100%;
-background: var(–accent);
-}
-
-.proj-card:active {
-transform: translateY(-2px);
-box-shadow: var(–shadow-lg);
-}
-
-.proj-name {
-font-size: 16px;
-font-weight: 700;
-color: var(–text-white);
-margin-bottom: 8px;
-}
-
-.proj-desc {
-font-size: 13px;
-color: var(–text-gray);
-line-height: 1.5;
-margin-bottom: 16px;
-}
-
-.proj-progress {
-height: 6px;
-background: var(–bg-card);
-border-radius: 3px;
-overflow: hidden;
-margin-bottom: 12px;
-}
-
-.proj-fill {
-height: 100%;
-background: var(–accent);
-transition: width 1s ease;
-}
-
-.proj-meta {
-display: flex;
-gap: 16px;
-font-size: 12px;
-color: var(–text-gray);
-font-weight: 500;
-}
+/* PROJECTS */
+.pc{background:var(–black);border-radius:20px;padding:20px;margin-bottom:16px;box-shadow:0 4px 16px rgba(0,0,0,0.4);cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.pc::before{content:’’;position:absolute;left:0;top:0;width:4px;height:100%;background:var(–orange)}
+.pc:active{transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,0.5)}
+.pn{font-size:16px;font-weight:700;color:var(–white);margin-bottom:8px}
+.pd{font-size:13px;color:var(–gray);line-height:1.5;margin-bottom:16px}
+.pg{height:6px;background:var(–card);border-radius:3px;overflow:hidden;margin-bottom:12px}
+.pf{height:100%;background:var(–orange);transition:width 1s ease}
+.pm{display:flex;gap:16px;font-size:12px;color:var(–gray);font-weight:500}
 
 /* EMPTY */
-.empty {
-text-align: center;
-padding: 60px 20px;
-}
-
-.empty-icon {
-font-size: 48px;
-margin-bottom: 12px;
-opacity: 0.3;
-}
-
-.empty-text {
-font-size: 14px;
-color: var(–text-gray);
-}
+.em{text-align:center;padding:60px 20px}
+.em-i{font-size:48px;margin-bottom:12px;opacity:.3}
+.em-t{font-size:14px;color:var(–gray)}
 
 /* FORMS */
-.card {
-background: var(–bg-card);
-border-radius: var(–radius-lg);
-padding: 20px;
-margin-bottom: 16px;
-box-shadow: var(–shadow-md);
-}
-
-.card-title {
-font-size: 16px;
-font-weight: 700;
-margin-bottom: 16px;
-color: var(–text-white);
-}
-
-.form-group {
-margin-bottom: 14px;
-}
-
-.form-row {
-display: grid;
-grid-template-columns: 1fr 1fr;
-gap: 12px;
-}
-
-.label {
-display: block;
-font-size: 11px;
-font-weight: 600;
-text-transform: uppercase;
-letter-spacing: 0.5px;
-color: var(–text-gray);
-margin-bottom: 8px;
-}
-
-.input {
-width: 100%;
-padding: 12px 14px;
-background: var(–bg-dark);
-border: 2px solid var(–border);
-border-radius: var(–radius-sm);
-font-family: ‘Inter’, sans-serif;
-font-size: 14px;
-color: var(–text-white);
-outline: none;
-transition: all 0.2s;
-}
-
-.input:focus {
-border-color: var(–accent);
-}
-
-textarea.input {
-resize: none;
-min-height: 80px;
-}
-
-.btn {
-width: 100%;
-padding: 14px;
-background: var(–accent);
-border: none;
-border-radius: var(–radius-lg);
-color: var(–text-white);
-font-size: 15px;
-font-weight: 600;
-cursor: pointer;
-font-family: ‘Inter’, sans-serif;
-margin-top: 8px;
-transition: all 0.2s;
-}
-
-.btn:active {
-transform: scale(0.98);
-}
-
-.btn-outline {
-background: transparent;
-border: 2px solid var(–border);
-color: var(–text-light);
-}
-
-.btn-outline:active {
-background: var(–bg-dark);
-}
-
-.alert {
-padding: 12px 16px;
-background: rgba(255,107,53,0.15);
-border: 2px solid var(–accent);
-border-radius: var(–radius-sm);
-color: var(–accent);
-font-size: 13px;
-font-weight: 500;
-margin-bottom: 16px;
-}
+.cd{background:var(–card);border-radius:20px;padding:20px;margin-bottom:16px;box-shadow:0 4px 16px rgba(0,0,0,0.4)}
+.cd-t{font-size:16px;font-weight:700;margin-bottom:16px;color:var(–white)}
+.fg{margin-bottom:14px}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.lb{display:block;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(–gray);margin-bottom:8px}
+.in{width:100%;padding:12px 14px;background:var(–bg);border:2px solid var(–border);border-radius:12px;font-family:‘Inter’,sans-serif;font-size:14px;color:var(–white);outline:none;transition:all .2s}
+.in:focus{border-color:var(–orange)}
+textarea.in{resize:none;min-height:80px}
+.btn{width:100%;padding:14px;background:var(–orange);border:none;border-radius:20px;color:var(–white);font-size:15px;font-weight:600;cursor:pointer;font-family:‘Inter’,sans-serif;margin-top:8px;transition:all .2s}
+.btn:active{transform:scale(.98)}
+.bo{background:transparent;border:2px solid var(–border);color:var(–light)}
+.bo:active{background:var(–bg)}
+.al{padding:12px 16px;background:rgba(255,107,53,0.15);border:2px solid var(–orange);border-radius:12px;color:var(–orange);font-size:13px;font-weight:500;margin-bottom:16px}
 
 /* NAV */
-.nav {
-position: fixed;
-bottom: 0;
-left: 50%;
-transform: translateX(-50%);
-width: 100%;
-max-width: 480px;
-background: var(–bg-black);
-border-top: 1px solid var(–border);
-padding: 8px 8px calc(var(–sb) + 8px);
-display: flex;
-gap: 4px;
-z-index: 100;
-box-shadow: 0 -4px 20px rgba(0,0,0,0.5);
-}
-
-.nav-item {
-flex: 1;
-display: flex;
-flex-direction: column;
-align-items: center;
-gap: 4px;
-padding: 10px 8px;
-background: transparent;
-border: none;
-border-radius: var(–radius-sm);
-cursor: pointer;
-position: relative;
-transition: all 0.2s;
-font-family: ‘Inter’, sans-serif;
-}
-
-.nav-item:active {
-transform: scale(0.95);
-}
-
-.nav-item.on {
-background: var(–bg-card);
-}
-
-.nav-label {
-font-size: 11px;
-font-weight: 600;
-color: var(–text-gray);
-white-space: nowrap;
-}
-
-.nav-item.on .nav-label {
-color: var(–accent);
-}
-
-.badge {
-position: absolute;
-top: 6px;
-right: 8px;
-background: var(–accent);
-color: var(–text-white);
-font-size: 9px;
-font-weight: 800;
-padding: 2px 5px;
-border-radius: 8px;
-min-width: 16px;
-text-align: center;
-display: none;
-}
-
-.badge.show {
-display: block;
-}
+.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:var(–black);border-top:1px solid var(–border);padding:8px 8px calc(var(–sb) + 8px);display:flex;gap:4px;z-index:100;box-shadow:0 -4px 20px rgba(0,0,0,0.5)}
+.ni{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 8px;background:transparent;border:none;border-radius:12px;cursor:pointer;position:relative;transition:all .2s;font-family:‘Inter’,sans-serif}
+.ni:active{transform:scale(.95)}
+.ni.on{background:var(–card)}
+.nl{font-size:11px;font-weight:600;color:var(–gray);white-space:nowrap}
+.ni.on .nl{color:var(–orange)}
+.bd{position:absolute;top:6px;right:8px;background:var(–orange);color:var(–white);font-size:9px;font-weight:800;padding:2px 5px;border-radius:8px;min-width:16px;text-align:center;display:none}
+.bd.show{display:block}
 
 /* MODAL */
-.overlay {
-position: fixed;
-inset: 0;
-background: rgba(0,0,0,0.8);
-z-index: 200;
-opacity: 0;
-pointer-events: none;
-transition: opacity 0.3s;
-backdrop-filter: blur(4px);
-}
-
-.overlay.on {
-opacity: 1;
-pointer-events: all;
-}
-
-.modal {
-position: fixed;
-bottom: 0;
-left: 50%;
-transform: translateX(-50%) translateY(100%);
-width: 100%;
-max-width: 480px;
-background: var(–bg-card);
-border-radius: var(–radius-xl) var(–radius-xl) 0 0;
-z-index: 201;
-padding-bottom: calc(var(–sb) + 16px);
-transition: transform 0.4s cubic-bezier(0.34, 1.3, 0.64, 1);
-max-height: 90vh;
-display: flex;
-flex-direction: column;
-box-shadow: var(–shadow-lg);
-}
-
-.modal.on {
-transform: translateX(-50%) translateY(0);
-}
-
-.modal-handle {
-width: 40px;
-height: 4px;
-background: var(–border);
-border-radius: 2px;
-margin: 12px auto;
-}
-
-.modal-head {
-display: flex;
-align-items: center;
-justify-content: space-between;
-padding: 8px 20px 16px;
-border-bottom: 1px solid var(–border);
-}
-
-.modal-head h3 {
-font-size: 18px;
-font-weight: 700;
-color: var(–text-white);
-}
-
-.modal-close {
-width: 36px;
-height: 36px;
-border-radius: 50%;
-background: var(–bg-dark);
-border: none;
-color: var(–text-white);
-font-size: 20px;
-display: flex;
-align-items: center;
-justify-content: center;
-cursor: pointer;
-transition: all 0.2s;
-}
-
-.modal-close:active {
-background: var(–accent);
-transform: scale(0.9);
-}
-
-.modal-body {
-padding: 20px;
-overflow-y: auto;
-flex: 1;
-}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:200;opacity:0;pointer-events:none;transition:opacity .3s;backdrop-filter:blur(4px)}
+.ov.on{opacity:1;pointer-events:all}
+.md{position:fixed;bottom:0;left:50%;transform:translateX(-50%) translateY(100%);width:100%;max-width:480px;background:var(–card);border-radius:24px 24px 0 0;z-index:201;padding-bottom:calc(var(–sb) + 16px);transition:transform .4s cubic-bezier(.34,1.3,.64,1);max-height:90vh;display:flex;flex-direction:column;box-shadow:0 8px 32px rgba(0,0,0,0.5)}
+.md.on{transform:translateX(-50%) translateY(0)}
+.mh{width:40px;height:4px;background:var(–border);border-radius:2px;margin:12px auto}
+.mhd{display:flex;align-items:center;justify-content:space-between;padding:8px 20px 16px;border-bottom:1px solid var(–border)}
+.mhd h3{font-size:18px;font-weight:700;color:var(–white)}
+.mc{width:36px;height:36px;border-radius:50%;background:var(–bg);border:none;color:var(–white);font-size:20px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s}
+.mc:active{background:var(–orange);transform:scale(.9)}
+.mb{padding:20px;overflow-y:auto;flex:1}
 
 /* TOAST */
-.toasts {
-position: fixed;
-top: calc(var(–st) + 60px);
-left: 50%;
-transform: translateX(-50%);
-width: calc(100% - 40px);
-max-width: 400px;
-z-index: 999;
-pointer-events: none;
-display: flex;
-flex-direction: column;
-gap: 8px;
-}
-
-.toast {
-background: var(–bg-black);
-color: var(–text-white);
-padding: 14px 18px;
-border-radius: var(–radius-lg);
-font-size: 14px;
-font-weight: 500;
-box-shadow: var(–shadow-lg);
-animation: slideDown 0.3s;
-border-left: 4px solid var(–accent);
-}
-
-@keyframes slideDown {
-from {
-opacity: 0;
-transform: translateY(-10px);
-}
-to {
-opacity: 1;
-transform: translateY(0);
-}
-}
-
-.hidden {
-display: none !important;
-}
-
-- {
-  scrollbar-width: none;
-  }
-
-*::-webkit-scrollbar {
-display: none;
-}
+.toasts{position:fixed;top:calc(var(–st) + 60px);left:50%;transform:translateX(-50%);width:calc(100% - 40px);max-width:400px;z-index:999;pointer-events:none;display:flex;flex-direction:column;gap:8px}
+.toast{background:var(–black);color:var(–white);padding:14px 18px;border-radius:20px;font-size:14px;font-weight:500;box-shadow:0 8px 32px rgba(0,0,0,0.5);animation:slideDown .3s;border-left:4px solid var(–orange)}
+@keyframes slideDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+.hidden{display:none!important}
+*{scrollbar-width:none}*::-webkit-scrollbar{display:none}
 </style>
 
 </head>
@@ -770,34 +141,25 @@ display: none;
 
 <div class="app">
   <!-- Header -->
-  <div class="header">
-    <div class="header-top">
-      <button class="menu-btn">≡</button>
-      <div class="profile">
-        <div class="avatar" id="user-avatar">A</div>
-        <div class="profile-info">
-          <div class="profile-name" id="user-name">Apichai</div>
-          <div class="profile-link">TaskFlow User</div>
+  <div class="hd">
+    <div class="hd-top">
+      <button class="menu">≡</button>
+      <div class="prof">
+        <div class="av" id="user-av">A</div>
+        <div class="prof-info">
+          <div class="prof-name" id="user-name">Apichai</div>
+          <div class="prof-sub">TaskFlow User</div>
         </div>
       </div>
-      <div class="balance">
-        <div class="balance-label">งานทั้งหมด</div>
-        <div class="balance-amount" id="total-tasks">0</div>
+      <div class="bal">
+        <div class="bal-lbl">งานทั้งหมด</div>
+        <div class="bal-amt" id="total">0</div>
       </div>
     </div>
     <div class="stats">
-      <div class="stat">
-        <div class="stat-num" id="stat-done">0</div>
-        <div class="stat-label">เสร็จแล้ว</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num" id="stat-overdue">0</div>
-        <div class="stat-label">เกินกำหนด</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num" id="stat-projects">0</div>
-        <div class="stat-label">โปรเจค</div>
-      </div>
+      <div class="stat"><div class="stat-n" id="s1">0</div><div class="stat-l">เสร็จแล้ว</div></div>
+      <div class="stat"><div class="stat-n" id="s2">0</div><div class="stat-l">เกินกำหนด</div></div>
+      <div class="stat"><div class="stat-n" id="s3">0</div><div class="stat-l">โปรเจค</div></div>
     </div>
   </div>
 
@@ -808,88 +170,48 @@ display: none;
 ```
 <!-- Dashboard -->
 <div class="pg on" id="pg-dash">
-  <div class="search">
-    <div class="search-icon">🔍</div>
-    <input type="text" placeholder="ค้นหางาน..." id="search-dash">
-  </div>
-
-  <div class="sec">
-    <div class="sec-head">
-      <h2 class="sec-title">วันนี้</h2>
-      <button class="btn-add" onclick="openModal('task')">เพิ่ม</button>
-    </div>
-    <div id="d-today"></div>
-  </div>
-
-  <div class="sec">
-    <div class="sec-head">
-      <h2 class="sec-title">โปรเจค</h2>
-    </div>
-    <div id="d-projs"></div>
-  </div>
+  <div class="srch"><span>🔍</span><input type="text" placeholder="ค้นหางาน..."></div>
+  <div class="sec"><div class="sh"><h2 class="st">วันนี้</h2><button class="ba" onclick="openModal('task')">เพิ่ม</button></div><div id="d-today"></div></div>
+  <div class="sec"><div class="sh"><h2 class="st">โปรเจค</h2></div><div id="d-projs"></div></div>
 </div>
 
 <!-- Tasks -->
 <div class="pg" id="pg-tasks">
-  <div class="search">
-    <div class="search-icon">🔍</div>
-    <input type="text" placeholder="ค้นหางาน..." id="srch-inp" oninput="renderTasks()">
+  <div class="srch"><span>🔍</span><input type="text" placeholder="ค้นหางาน..." id="srch-inp" oninput="renderTasks()"></div>
+  <div class="flt">
+    <button class="on" onclick="setF(this,'all')">ทั้งหมด</button>
+    <button onclick="setF(this,'todo')">รอทำ</button>
+    <button onclick="setF(this,'inprogress')">กำลังทำ</button>
+    <button onclick="setF(this,'done')">เสร็จแล้ว</button>
   </div>
-
-  <div class="filters">
-    <button class="filter on" onclick="setF(this,'all')">ทั้งหมด</button>
-    <button class="filter" onclick="setF(this,'todo')">รอทำ</button>
-    <button class="filter" onclick="setF(this,'inprogress')">กำลังทำ</button>
-    <button class="filter" onclick="setF(this,'done')">เสร็จแล้ว</button>
-  </div>
-
   <div id="task-list"></div>
 </div>
 
 <!-- Today -->
 <div class="pg" id="pg-today">
-  <div class="sec-head">
-    <h2 class="sec-title">วันนี้</h2>
-    <button class="btn-add" onclick="openModal('task')">เพิ่ม</button>
-  </div>
+  <div class="sh"><h2 class="st">วันนี้</h2><button class="ba" onclick="openModal('task')">เพิ่ม</button></div>
   <div id="today-list"></div>
 </div>
 
 <!-- Projects -->
 <div class="pg" id="pg-proj">
-  <div class="sec-head">
-    <h2 class="sec-title">โปรเจค</h2>
-    <button class="btn-add" onclick="openModal('proj')">สร้าง</button>
-  </div>
+  <div class="sh"><h2 class="st">โปรเจค</h2><button class="ba" onclick="openModal('proj')">สร้าง</button></div>
   <div id="proj-list"></div>
 </div>
 
 <!-- Settings -->
 <div class="pg" id="pg-setup">
-  <h2 class="sec-title" style="margin-bottom:20px">ตั้งค่า</h2>
-  
-  <div class="alert" id="ok-box" style="display:none">
-    ✓ เชื่อมต่อสำเร็จ
-  </div>
-
-  <div class="card">
-    <h3 class="card-title">เชื่อมต่อ API</h3>
-    <div class="form-group">
-      <label class="label">API URL</label>
-      <input type="url" class="input" id="cfg-api" placeholder="https://script.google.com/...">
-    </div>
-    <div class="form-row">
-      <div class="form-group">
-        <label class="label">ชื่อ</label>
-        <input type="text" class="input" id="cfg-name" placeholder="ชื่อ">
-      </div>
-      <div class="form-group">
-        <label class="label">Avatar</label>
-        <input type="text" class="input" id="cfg-av" maxlength="1" placeholder="A">
-      </div>
+  <h2 class="st" style="margin-bottom:20px">ตั้งค่า</h2>
+  <div class="al" id="ok-box" style="display:none">✓ เชื่อมต่อสำเร็จ</div>
+  <div class="cd">
+    <h3 class="cd-t">เชื่อมต่อ API</h3>
+    <div class="fg"><label class="lb">API URL</label><input type="url" class="in" id="cfg-api"></div>
+    <div class="fr">
+      <div class="fg"><label class="lb">ชื่อ</label><input type="text" class="in" id="cfg-name"></div>
+      <div class="fg"><label class="lb">Avatar</label><input type="text" class="in" id="cfg-av" maxlength="1"></div>
     </div>
     <button class="btn" onclick="saveSettings()">บันทึก</button>
-    <button class="btn btn-outline" onclick="clearAll()">ล้างค่า</button>
+    <button class="btn bo" onclick="clearAll()">ล้างค่า</button>
   </div>
 </div>
 ```
@@ -899,95 +221,44 @@ display: none;
   <!-- Nav -->
 
   <nav class="nav">
-    <button class="nav-item on" data-p="dash" onclick="go(this,'dash')">
-      <span class="nav-label">หลัก</span>
-      <span class="badge" id="b-dash">0</span>
-    </button>
-    <button class="nav-item" data-p="tasks" onclick="go(this,'tasks')">
-      <span class="nav-label">งาน</span>
-      <span class="badge" id="b-tasks">0</span>
-    </button>
-    <button class="nav-item" data-p="today" onclick="go(this,'today')">
-      <span class="nav-label">วันนี้</span>
-      <span class="badge" id="b-today">0</span>
-    </button>
-    <button class="nav-item" data-p="proj" onclick="go(this,'proj')">
-      <span class="nav-label">โปรเจค</span>
-    </button>
-    <button class="nav-item" data-p="setup" onclick="go(this,'setup')">
-      <span class="nav-label">ตั้งค่า</span>
-    </button>
+    <button class="ni on" data-p="dash" onclick="go(this,'dash')"><span class="nl">หลัก</span><span class="bd" id="b-dash">0</span></button>
+    <button class="ni" data-p="tasks" onclick="go(this,'tasks')"><span class="nl">งาน</span><span class="bd" id="b-tasks">0</span></button>
+    <button class="ni" data-p="today" onclick="go(this,'today')"><span class="nl">วันนี้</span><span class="bd" id="b-today">0</span></button>
+    <button class="ni" data-p="proj" onclick="go(this,'proj')"><span class="nl">โปรเจค</span></button>
+    <button class="ni" data-p="setup" onclick="go(this,'setup')"><span class="nl">ตั้งค่า</span></button>
   </nav>
 </div>
 
 <!-- Modals -->
 
-<div class="overlay" id="ov-task" onclick="closeModal('task')"></div>
-<div class="modal" id="modal-task">
-  <div class="modal-handle"></div>
-  <div class="modal-head">
-    <h3 id="modal-task-tit">เพิ่มงาน</h3>
-    <button class="modal-close" onclick="closeModal('task')">✕</button>
-  </div>
-  <div class="modal-body">
-    <div class="form-group">
-      <label class="label">ชื่องาน</label>
-      <input type="text" class="input" id="t-ti" placeholder="ชื่องาน...">
+<div class="ov" id="ov-task" onclick="closeModal('task')"></div>
+<div class="md" id="modal-task">
+  <div class="mh"></div>
+  <div class="mhd"><h3 id="modal-task-tit">เพิ่มงาน</h3><button class="mc" onclick="closeModal('task')">✕</button></div>
+  <div class="mb">
+    <div class="fg"><label class="lb">ชื่องาน</label><input type="text" class="in" id="t-ti"></div>
+    <div class="fg"><label class="lb">โปรเจค</label><select class="in" id="t-pr"></select></div>
+    <div class="fr">
+      <div class="fg"><label class="lb">สถานะ</label><select class="in" id="t-st"><option value="todo">รอทำ</option><option value="inprogress">กำลังทำ</option><option value="done">เสร็จแล้ว</option></select></div>
+      <div class="fg"><label class="lb">ความสำคัญ</label><select class="in" id="t-pi"><option value="high">สูง</option><option value="medium" selected>กลาง</option><option value="low">ต่ำ</option></select></div>
     </div>
-    <div class="form-group">
-      <label class="label">โปรเจค</label>
-      <select class="input" id="t-pr"></select>
-    </div>
-    <div class="form-row">
-      <div class="form-group">
-        <label class="label">สถานะ</label>
-        <select class="input" id="t-st">
-          <option value="todo">รอทำ</option>
-          <option value="inprogress">กำลังทำ</option>
-          <option value="done">เสร็จแล้ว</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label class="label">ความสำคัญ</label>
-        <select class="input" id="t-pi">
-          <option value="high">สูง</option>
-          <option value="medium" selected>กลาง</option>
-          <option value="low">ต่ำ</option>
-        </select>
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="label">กำหนดส่ง</label>
-      <input type="date" class="input" id="t-du">
-    </div>
+    <div class="fg"><label class="lb">กำหนดส่ง</label><input type="date" class="in" id="t-du"></div>
     <input type="hidden" id="t-eid">
     <button class="btn" onclick="saveTask()">บันทึก</button>
-    <button class="btn btn-outline" onclick="closeModal('task')">ยกเลิก</button>
+    <button class="btn bo" onclick="closeModal('task')">ยกเลิก</button>
   </div>
 </div>
 
-<div class="overlay" id="ov-proj" onclick="closeModal('proj')"></div>
-<div class="modal" id="modal-proj">
-  <div class="modal-handle"></div>
-  <div class="modal-head">
-    <h3>สร้างโปรเจค</h3>
-    <button class="modal-close" onclick="closeModal('proj')">✕</button>
-  </div>
-  <div class="modal-body">
-    <div class="form-group">
-      <label class="label">ชื่อโปรเจค</label>
-      <input type="text" class="input" id="p-na" placeholder="ชื่อโปรเจค...">
-    </div>
-    <div class="form-group">
-      <label class="label">คำอธิบาย</label>
-      <textarea class="input" id="p-de" rows="3" placeholder="คำอธิบาย..."></textarea>
-    </div>
-    <div class="form-group">
-      <label class="label">Deadline</label>
-      <input type="date" class="input" id="p-dl">
-    </div>
+<div class="ov" id="ov-proj" onclick="closeModal('proj')"></div>
+<div class="md" id="modal-proj">
+  <div class="mh"></div>
+  <div class="mhd"><h3>สร้างโปรเจค</h3><button class="mc" onclick="closeModal('proj')">✕</button></div>
+  <div class="mb">
+    <div class="fg"><label class="lb">ชื่อโปรเจค</label><input type="text" class="in" id="p-na"></div>
+    <div class="fg"><label class="lb">คำอธิบาย</label><textarea class="in" id="p-de" rows="3"></textarea></div>
+    <div class="fg"><label class="lb">Deadline</label><input type="date" class="in" id="p-dl"></div>
     <button class="btn" onclick="saveProj()">บันทึก</button>
-    <button class="btn btn-outline" onclick="closeModal('proj')">ยกเลิก</button>
+    <button class="btn bo" onclick="closeModal('proj')">ยกเลิก</button>
   </div>
 </div>
 
